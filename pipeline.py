@@ -110,18 +110,17 @@ class DE2A2DEBot(Bot):
     def __init__(self, model_name):
         super().__init__(model_name)
     def tanscribe(self, text):
-        prompt = "You are a everyday German to A2 level German transcriptionist. You will be given a text and you will transcribe it in A2 German. At the end you will print a list of difficult words and explain their meanings in english."
+        prompt = "You are a everyday German to A2 level German tutor. You want to rewrite text into a simpler way so your students who only know A2 German can understand it while learning. At the end you will print a list of difficult words and explain their meanings in English."
         self.print_add_history("system", "user_admin", prompt)
-        self.print_add_history("user", "user_ex", "This is the text you need to transcribe: \n"+text)
-        ans = self.talk("", "user", "user")
+        self.print_add_history("user", "user_ex", text)
+        ans = self.talk("", "assistant", "tutor")
         return ans
 
 if __name__ == "__main__":
     bot = DE2A2DEBot('gpt-3.5-turbo',)
 
-    ans = bot.tanscribe("Habe Spotify sofort aus meinem Leben verbannt als ich erfuhr wie hoch die Firmenanteile von Tencent sind…")
-    
-
+    ans = bot.tanscribe("Habe Spotify sofort aus meinem Leben verbannt als ich erfuhr wie hoch die Firmenanteile von Tencent sind...")
+    #juli zeh - corpus delicti ein process
     
     print(bot.history)
     print(ans)
