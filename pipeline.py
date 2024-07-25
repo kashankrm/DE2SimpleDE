@@ -146,15 +146,3 @@ class DE2A2DEBot(Bot):
         ans = self.talk("", "assistant", "tutor")
         return ans
 
-if __name__ == "__main__":
-    bot = DE2A2DEBot('',)
-    date = (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d")
-    news_data = get_news('Apple', date)
-    random_news = random.choice(news_data['articles'])
-    txt = random_news['description']
-    ans = bot.transcribe(txt)
-    
-    
-    # print(bot.history)
-    print("\n\n\n\n\n\n")
-    print(ans)
