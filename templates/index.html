@@ -38,7 +38,8 @@
             $(document).on('click', '.list-group-item', function() {
                 const description = $(this).data('description');
                 $.post('/translate', { text: description }, function(data) {
-                    alert('Translated Text: ' + data.translation);
+                    const translatedText = `<div class="mt-3"><h3>Translated Text</h3><p>${data.translation}</p></div>`;
+                    $('#news-articles').append(translatedText);
                 });
             });
         });
