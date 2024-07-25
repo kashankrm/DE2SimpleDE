@@ -1,6 +1,31 @@
+from datetime import datetime, timedelta
+import random
 from utils import chat_completion as chat_model, html2text, search_with_sites, download_page
 import asyncio
+import requests
 import time
+from dotenv import load_dotenv
+import os
+load_dotenv()
+
+
+def get_news( query, from_date, sort_by='popularity'):
+    api_key = os.getenv('NEWS_API_KEY')
+    url = 'https://newsapi.org/v2/everything'
+    params = {
+        'q': query,
+        'from': from_date,
+        'sortBy': sort_by,
+        'apiKey': api_key
+    }
+    
+    response = requests.get(url, params=params)
+    
+    if response.status_code == 200:
+        return response.json()
+    else:
+        return {'error': response.status_code, 'message': response.text}
+
 #Bot class takes model name and has a scractpad
 class Bot:
     def __init__(self, model_name):
@@ -109,18 +134,27 @@ class Conversation:
 class DE2A2DEBot(Bot):
     def __init__(self, model_name):
         super().__init__(model_name)
-    def tanscribe(self, text):
-        prompt = "You are a everyday German to A2 level German tutor. You want to rewrite text into a simpler way so your students who only know A2 German can understand it while learning. At the end you will print a list of difficult words and explain their meanings in English."
+
+    def transcribe(self, text):
+        prompt = (
+            "You are a German language tutor specializing in A2 level. Your task is to rewrite the provided text "
+            "in a simpler form so that A2 level students can understand it. After simplifying the text, provide a list of difficult "
+            "words along with their meanings in English. Ensure the simplified text retains the original meaning as much as possible."
+        )
         self.print_add_history("system", "user_admin", prompt)
         self.print_add_history("user", "user_ex", text)
         ans = self.talk("", "assistant", "tutor")
         return ans
 
 if __name__ == "__main__":
-    bot = DE2A2DEBot('gpt-3.5-turbo',)
-
-    ans = bot.tanscribe("Habe Spotify sofort aus meinem Leben verbannt als ich erfuhr wie hoch die Firmenanteile von Tencent sind...")
-    #juli zeh - corpus delicti ein process
+    bot = DE2A2DEBot('',)
+    date = (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d")
+    news_data = get_news('Apple', date)
+    random_news = random.choice(news_data['articles'])
+    txt = random_news['description']
+    ans = bot.transcribe(txt)
     
-    print(bot.history)
+    
+    # print(bot.history)
+    print("\n\n\n\n\n\n")
     print(ans)
