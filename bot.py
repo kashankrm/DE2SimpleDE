@@ -47,7 +47,14 @@ class DE2A2DEBot(Bot):
         prompt = (
             "You are a German language tutor specializing in A2 level. Your task is to rewrite the provided text "
             "in a simpler form so that A2 level students can understand it. After simplifying the text, provide a list of difficult "
-            "words along with their meanings in English. Ensure the simplified text retains the original meaning as much as possible."
+            "words along with their meanings in English. Ensure the simplified text retains the original meaning as much as possible.\n\n"
+            "Example:\n"
+            "Original: Die Wirtschaft wächst schneller als erwartet.\n"
+            "Simplified: Die Wirtschaft wächst schneller als gedacht.\n"
+            "Difficult words: \n"
+            "1. Wirtschaft - economy\n"
+            "2. erwartet - expected\n\n"
+            "Please simplify the following text:"
         )
         self.print_add_history("system", "user_admin", prompt)
         self.print_add_history("user", "user_ex", text)
